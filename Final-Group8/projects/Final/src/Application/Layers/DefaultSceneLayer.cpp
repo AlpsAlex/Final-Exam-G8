@@ -355,11 +355,13 @@ void DefaultSceneLayer::_CreateScene()
 		// Set up the scene's camera
 		GameObject::Sptr camera = scene->MainCamera->GetGameObject()->SelfRef();
 		{
-			camera->SetPostion({ 0, 0, 35 });
-			camera->SetRotation({ 0,0,0 });
-			camera->LookAt(glm::vec3(0.0f));
+			camera->SetPostion({ 0, 0, 5 });
+			camera->SetRotation({ 90,0,180 });
+			//camera->LookAt(glm::vec3(0.0f));
 
 			camera->Add<SimpleCameraControl>();
+
+		//	camera->Add<SimpleCameraControl>();
 
 			// This is now handled by scene itself!
 			//Camera::Sptr cam = camera->Add<Camera>();
@@ -400,10 +402,12 @@ void DefaultSceneLayer::_CreateScene()
 		GameObject::Sptr monkey1 = scene->CreateGameObject("Monkey 1");
 		{
 			// Set position in the scene
-			monkey1->SetPostion(glm::vec3(0.0f, 0.0f, 1.0f));
-
+			monkey1->SetPostion(glm::vec3(5.0f, -5.0f, 1.0f));
+			monkey1->SetRotation(glm::vec3(5.0f, 0.0f, -90.0f));
 			// Add some behaviour that relies on the physics body
 			monkey1->Add<JumpBehaviour>();
+			RigidBody::Sptr physics = monkey1->Add<RigidBody>(RigidBodyType::Dynamic);
+			auto rb = physics->AddCollider(BoxCollider::Create(glm::vec3(1,1,1)));
 
 			// Create and attach a renderer for the monkey
 			RenderComponent::Sptr renderer = monkey1->Add<RenderComponent>();
@@ -411,11 +415,11 @@ void DefaultSceneLayer::_CreateScene()
 			renderer->SetMaterial(monkeyMaterial);
 
 			// Example of a trigger that interacts with static and kinematic bodies as well as dynamic bodies
-			TriggerVolume::Sptr trigger = monkey1->Add<TriggerVolume>();
-			trigger->SetFlags(TriggerTypeFlags::Statics | TriggerTypeFlags::Kinematics);
-			trigger->AddCollider(BoxCollider::Create(glm::vec3(1.0f)));
+			//TriggerVolume::Sptr trigger = monkey1->Add<TriggerVolume>();
+			//trigger->SetFlags(TriggerTypeFlags::Statics | TriggerTypeFlags::Kinematics);
+			//trigger->AddCollider(BoxCollider::Create(glm::vec3(1.0f)));
 
-			monkey1->Add<TriggerVolumeEnterBehaviour>();
+			//monkey1->Add<TriggerVolumeEnterBehaviour>();
 		}
 
 		GameObject::Sptr ship = scene->CreateGameObject("Fenrir");

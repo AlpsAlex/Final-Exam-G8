@@ -25,7 +25,7 @@ public:
 	static JumpBehaviour::Sptr FromJson(const nlohmann::json& blob);
 
 protected:
-	float _impulse;
+	float _impulse = 10.0f;
 
 	bool _isPressed = false;
 	Gameplay::Physics::RigidBody::Sptr _body;
