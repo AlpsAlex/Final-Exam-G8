@@ -408,6 +408,7 @@ void DefaultSceneLayer::_CreateScene()
 			monkey1->Add<JumpBehaviour>();
 			RigidBody::Sptr physics = monkey1->Add<RigidBody>(RigidBodyType::Dynamic);
 			auto rb = physics->AddCollider(BoxCollider::Create(glm::vec3(1,1,1)));
+
 			// Create and attach a renderer for the monkey
 			RenderComponent::Sptr renderer = monkey1->Add<RenderComponent>();
 			renderer->SetMesh(monkeyMesh);

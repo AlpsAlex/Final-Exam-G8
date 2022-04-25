@@ -51,11 +51,11 @@ void JumpBehaviour::Update(float deltaTime) {
 	}
 	if (_D) {
 
-		_body->SetLinearVelocity(glm::vec3(1.0f, 0.f, _body->GetLinearVelocity().z));
+		_body->SetLinearVelocity(glm::vec3(-5.0f, 0.f, _body->GetLinearVelocity().z));
 		
 	}
 	if (_A) {
-		_body->SetLinearVelocity(glm::vec3(-1.0f, 0.f, _body->GetLinearVelocity().z));
+		_body->SetLinearVelocity(glm::vec3(5.0f, 0.f, _body->GetLinearVelocity().z));
 		
 	}
 
