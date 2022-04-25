@@ -449,8 +449,8 @@ void DefaultSceneLayer::_CreateScene()
 			monkey2->SetRotation(glm::vec3(5.0f, 0.0f, -90.0f));
 			// Add some behaviour that relies on the physics body
 
-			RigidBody::Sptr physics = monkey2->Add<RigidBody>(RigidBodyType::Dynamic);
-			auto rb = physics->AddCollider(BoxCollider::Create(glm::vec3(1, 1, 1)));
+			RigidBody::Sptr ballphysics = monkey2->Add<RigidBody>(RigidBodyType::Dynamic);
+			auto rb = ballphysics->AddCollider(BoxCollider::Create(glm::vec3(1, 1, 1)));
 
 			// Create and attach a renderer for the monkey
 			RenderComponent::Sptr renderer = monkey2->Add<RenderComponent>();

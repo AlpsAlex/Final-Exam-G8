@@ -62,13 +62,9 @@ void JumpBehaviour::Update(float deltaTime) {
 	}
 	if (_E) {
 		
-		GetGameObject()->GetScene()->FindObjectByName("ball")->SetRotation(glm::vec3(0.0f, 0.0f, -90.f));;
-		GetGameObject()->GetScene()->FindObjectByName("ball")->Get<Gameplay::Physics::RigidBody>()->ApplyImpulse(glm::vec3(1.0f, 0.0f, 0.0f));
+		GetGameObject()->GetScene()->FindObjectByName("ball")->Get<Gameplay::Physics::RigidBody>()->ApplyImpulse(glm::vec3(0.0f, -1.0f, 0.0f));
 	 }
-	if (_Q) {
 
-		GetGameObject()->GetScene()->FindObjectByName("ball")->Get<Gameplay::Physics::RigidBody>()->ApplyImpulse(glm::vec3(-1.0f, 0.0f, 0.0f));
-	}
 
 
 }
