@@ -398,6 +398,27 @@ void DefaultSceneLayer::_CreateScene()
 			renderer->SetMesh(sphere);
 			renderer->SetMaterial(toonMaterial);
 		}
+		GameObject::Sptr particles = scene->CreateGameObject("Particles");
+		{
+			
+
+			ParticleSystem::Sptr particleManager = particles->Add<ParticleSystem>();
+			particleManager->Atlas = particleTex;
+
+			ParticleSystem::ParticleData emitter;
+			emitter.Type = ParticleType::SphereEmitter;
+			emitter.TexID = 2;
+			emitter.Position = glm::vec3(0.0f);
+			emitter.Color = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+			emitter.Lifetime = 0.0f;
+			emitter.SphereEmitterData.Timer = 1.0f / 50.0f;
+			emitter.SphereEmitterData.Velocity = 0.5f;
+			emitter.SphereEmitterData.LifeRange = { 1.0f, 4.0f };
+			emitter.SphereEmitterData.Radius = 1.0f;
+			emitter.SphereEmitterData.SizeRange = { 0.5f, 1.5f };
+
+			particleManager->AddEmitter(emitter);
+		}
 		GameObject::Sptr ball = scene->CreateGameObject("ball");
 		{
 			// Set position in the scene
@@ -411,7 +432,7 @@ void DefaultSceneLayer::_CreateScene()
 			RenderComponent::Sptr renderer = ball->Add<RenderComponent>();
 			renderer->SetMesh(sphere);
 			renderer->SetMaterial(toonMaterial);
-
+			ball->AddChild(particles);
 			// Example of a trigger that interacts with static and kinematic bodies as well as dynamic bodies
 			//TriggerVolume::Sptr trigger = monkey1->Add<TriggerVolume>();
 			//trigger->SetFlags(TriggerTypeFlags::Statics | TriggerTypeFlags::Kinematics);
@@ -588,27 +609,7 @@ void DefaultSceneLayer::_CreateScene()
 		}
 		
 
-		GameObject::Sptr particles = scene->CreateGameObject("Particles"); 
-		{
-			particles->SetPostion({ -2.0f, 0.0f, 2.0f });
 
-			ParticleSystem::Sptr particleManager = particles->Add<ParticleSystem>();  
-			particleManager->Atlas = particleTex;
-
-			ParticleSystem::ParticleData emitter;
-			emitter.Type = ParticleType::SphereEmitter;
-			emitter.TexID = 2;
-			emitter.Position = glm::vec3(0.0f);
-			emitter.Color = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
-			emitter.Lifetime = 0.0f;
-			emitter.SphereEmitterData.Timer = 1.0f / 50.0f;
-			emitter.SphereEmitterData.Velocity = 0.5f;
-			emitter.SphereEmitterData.LifeRange = { 1.0f, 4.0f };
-			emitter.SphereEmitterData.Radius = 1.0f;
-			emitter.SphereEmitterData.SizeRange = { 0.5f, 1.5f };
-
-			particleManager->AddEmitter(emitter);
-		}
 
 		GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui-sprite.png"));
 		GuiBatcher::SetDefaultBorderRadius(8);
