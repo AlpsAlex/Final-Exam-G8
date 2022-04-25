@@ -37,6 +37,10 @@ JumpBehaviour::Sptr JumpBehaviour::FromJson(const nlohmann::json& blob) {
 }
 
 void JumpBehaviour::Update(float deltaTime) {
+	bool _A = InputEngine::IsKeyDown(GLFW_KEY_A);
+	bool _D = InputEngine::IsKeyDown(GLFW_KEY_D);
+	_body->GetGameObject()->SetRotation(glm::vec3(0.0f, 0.0f, -90.f));
+
 	if (InputEngine::GetKeyState(GLFW_KEY_SPACE) == ButtonState::Pressed) {
 		_body->ApplyImpulse(glm::vec3(0.0f, 0.0f, _impulse));
 
@@ -45,5 +49,17 @@ void JumpBehaviour::Update(float deltaTime) {
 			ptr->IsEnabled = !ptr->IsEnabled;
 		}
 	}
+	if (_D) {
+
+		_body->SetLinearVelocity(glm::vec3(1.0f, 0.f, _body->GetLinearVelocity().z));
+		
+	}
+	if (_A) {
+		_body->SetLinearVelocity(glm::vec3(-1.0f, 0.f, _body->GetLinearVelocity().z));
+		
+	}
+
+
+
 }
 
