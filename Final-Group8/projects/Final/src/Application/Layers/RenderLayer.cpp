@@ -17,6 +17,31 @@
 #include <GLM/gtx/common.hpp> // for fmod (floating modulus)
 #include "Gameplay/Components/ShadowCamera.h"
 
+#include "Utils/ObjLoader.h"
+#include "Gameplay/GameObject.h"
+
+using namespace Gameplay;
+using namespace Gameplay::Physics;
+float moveX, moveY, moveZ;
+
+void playerMovement(GameObject::Sptr obj1) {
+	if (glfwGetKey(Application::Get().GetWindow(), GLFW_KEY_W) == GLFW_PRESS)
+		moveY += 0.1f;
+	if (glfwGetKey(Application::Get().GetWindow(), GLFW_KEY_A) == GLFW_PRESS)
+		moveX -= 0.1f;
+	if (glfwGetKey(Application::Get().GetWindow(), GLFW_KEY_S) == GLFW_PRESS)
+		moveY -= 0.1f;
+	if (glfwGetKey(Application::Get().GetWindow(), GLFW_KEY_D) == GLFW_PRESS)
+		moveX += 0.1f;
+	if (glfwGetKey(Application::Get().GetWindow(), GLFW_KEY_SPACE) == GLFW_PRESS)
+		moveZ += 0.1f * sin(glfwGetTime());
+	glm::vec3 move(moveX, moveY, moveZ);
+
+	obj1->SetPostion(obj1->GetPosition() + move);
+	moveX = 0;
+	moveY = 0;
+	moveZ = 0;
+}
 
 RenderLayer::RenderLayer() :
 	ApplicationLayer(),
