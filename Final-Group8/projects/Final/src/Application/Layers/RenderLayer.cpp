@@ -34,7 +34,9 @@ void playerMovement(GameObject::Sptr obj1) {
 	if (glfwGetKey(Application::Get().GetWindow(), GLFW_KEY_D) == GLFW_PRESS)
 		moveX += 0.1f;
 	if (glfwGetKey(Application::Get().GetWindow(), GLFW_KEY_SPACE) == GLFW_PRESS)
-		moveZ += 0.1f * sin(glfwGetTime());
+		moveZ += 0.1f;
+	if (glfwGetKey(Application::Get().GetWindow(), GLFW_KEY_C) == GLFW_PRESS)
+		moveZ -= 0.1f;
 	glm::vec3 move(moveX, moveY, moveZ);
 
 	obj1->SetPostion(obj1->GetPosition() + move);
@@ -139,6 +141,19 @@ void RenderLayer::OnRender(const Framebuffer::Sptr& prevLayer)
 	app.CurrentScene()->DrawSkybox();
 
 	VertexArrayObject::Unbind(); 
+	GameObject::Sptr player = app.CurrentScene()->FindObjectByName("Monkey 1");
+	playerMovement(player);
+
+	GameObject::Sptr win = app.CurrentScene()->FindObjectByName("Toon Object");
+	GameObject::Sptr lose = app.CurrentScene()->FindObjectByName("Fenrir");
+	GameObject::Sptr shipLight = app.CurrentScene()->FindObjectByName("ship Light");
+	shipLight->SetPostion(lose->GetPosition());
+	if(player->GetPosition().x==shipLight->GetPosition().x&& player->GetPosition().y == shipLight->GetPosition().y)
+		if(player->GetPosition().z <= shipLight->GetPosition().z)
+		{
+			std::cout << "lose\n";
+			player->SetPostion(glm::vec3(0.0f, 0.0f, 1.0f));
+		}
 }
 
 void RenderLayer::OnPostRender() {

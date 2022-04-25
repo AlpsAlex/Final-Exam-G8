@@ -59,6 +59,7 @@
 #include "Gameplay/Physics/Colliders/CylinderCollider.h"
 #include "Gameplay/Physics/TriggerVolume.h"
 #include "Graphics/DebugDraw.h"
+#include "../Timing.h"
 
 // GUI
 #include "Gameplay/Components/GUI/RectTransform.h"
@@ -354,7 +355,8 @@ void DefaultSceneLayer::_CreateScene()
 		// Set up the scene's camera
 		GameObject::Sptr camera = scene->MainCamera->GetGameObject()->SelfRef();
 		{
-			camera->SetPostion({ -3, -1, 5 });
+			camera->SetPostion({ 0, 0, 35 });
+			camera->SetRotation({ 0,0,0 });
 			camera->LookAt(glm::vec3(0.0f));
 
 			camera->Add<SimpleCameraControl>();
@@ -384,12 +386,21 @@ void DefaultSceneLayer::_CreateScene()
 			physics->AddCollider(BoxCollider::Create(glm::vec3(50.0f, 50.0f, 1.0f)))->SetPosition({ 0,0,-1 });
 		}
 
-		
+		GameObject::Sptr toonBall = scene->CreateGameObject("Toon Object");
+		{
+			// Set and rotation position in the scene
+			toonBall->SetPostion(glm::vec3(-12.0f, -14.0f, 1.0f));
+
+			// Add a render component
+			RenderComponent::Sptr renderer = toonBall->Add<RenderComponent>();
+			renderer->SetMesh(sphere);
+			renderer->SetMaterial(toonMaterial);
+		}
 
 		GameObject::Sptr monkey1 = scene->CreateGameObject("Monkey 1");
 		{
 			// Set position in the scene
-			monkey1->SetPostion(glm::vec3(1.5f, 0.0f, 1.0f));
+			monkey1->SetPostion(glm::vec3(0.0f, 0.0f, 1.0f));
 
 			// Add some behaviour that relies on the physics body
 			monkey1->Add<JumpBehaviour>();
@@ -456,8 +467,12 @@ void DefaultSceneLayer::_CreateScene()
 
 			ShipMoveBehaviour::Sptr move = ship->Add<ShipMoveBehaviour>();
 			move->Center = glm::vec3(0.0f, 0.0f, 4.0f);
-			move->Speed = 180.0f;
-			move->Radius = 6.0f;
+			move->Speed = 120.0;
+			move->Radius = 12.0f;
+
+			RigidBody::Sptr physics = ship->Add<RigidBody>(/*static by default*/);
+			physics->AddCollider(BoxCollider::Create(glm::vec3(1.0f, 1.0f, 1.0f)))->SetPosition(ship->GetPosition());
+		
 		}
 
 		GameObject::Sptr demoBase = scene->CreateGameObject("Demo Parent");
@@ -477,14 +492,21 @@ void DefaultSceneLayer::_CreateScene()
 		GameObject::Sptr shadowCaster = scene->CreateGameObject("Shadow Light");
 		{
 			// Set position in the scene
-			shadowCaster->SetPostion(glm::vec3(3.0f, 3.0f, 5.0f));
-			shadowCaster->LookAt(glm::vec3(0.0f));
+			shadowCaster->SetPostion(glm::vec3(3.0f, 3.0f, 20.0f));
 
 			// Create and attach a renderer for the monkey
 			ShadowCamera::Sptr shadowCam = shadowCaster->Add<ShadowCamera>();
-			shadowCam->SetProjection(glm::perspective(glm::radians(120.0f), 1.0f, 0.1f, 100.0f));
+			shadowCam->SetProjection(glm::perspective(glm::radians(300.0f), 1.0f, 0.1f, 100.0f));
 		}
 
+		GameObject::Sptr shipLight = scene->CreateGameObject("ship Light");
+		{
+			// Set position in the scene
+
+			// Create and attach a renderer for the monkey
+			ShadowCamera::Sptr shadowCam = shipLight->Add<ShadowCamera>();
+			shadowCam->SetProjection(glm::perspective(glm::radians(80.0f), 1.0f, 0.1f, 100.0f));
+		}
 		/////////////////////////// UI //////////////////////////////
 		
 		GameObject::Sptr canvas = scene->CreateGameObject("UI Canvas"); 
@@ -513,7 +535,6 @@ void DefaultSceneLayer::_CreateScene()
 				GuiText::Sptr text = subPanel->Add<GuiText>();
 				text->SetText("Hello world!");
 				text->SetFont(font);
-
 				monkey1->Get<JumpBehaviour>()->Panel = text;
 			}
 
