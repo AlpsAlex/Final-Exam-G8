@@ -4,7 +4,7 @@
 #include "Gameplay/Scene.h"
 #include "Utils/ImGuiHelper.h"
 #include "Gameplay/InputEngine.h"
-
+#include "Gameplay/Physics/RigidBody.h"
 void JumpBehaviour::Awake()
 {
 	_body = GetComponent<Gameplay::Physics::RigidBody>();
@@ -39,6 +39,8 @@ JumpBehaviour::Sptr JumpBehaviour::FromJson(const nlohmann::json& blob) {
 void JumpBehaviour::Update(float deltaTime) {
 	bool _A = InputEngine::IsKeyDown(GLFW_KEY_A);
 	bool _D = InputEngine::IsKeyDown(GLFW_KEY_D);
+	bool _E = InputEngine::IsKeyDown(GLFW_KEY_E);
+	bool _Q = InputEngine::IsKeyDown(GLFW_KEY_Q);
 	_body->GetGameObject()->SetRotation(glm::vec3(0.0f, 0.0f, -90.f));
 
 	if (InputEngine::GetKeyState(GLFW_KEY_SPACE) == ButtonState::Pressed) {
@@ -58,7 +60,15 @@ void JumpBehaviour::Update(float deltaTime) {
 		_body->SetLinearVelocity(glm::vec3(5.0f, 0.f, _body->GetLinearVelocity().z));
 		
 	}
+	if (_E) {
+		
+		GetGameObject()->GetScene()->FindObjectByName("ball")->SetRotation(glm::vec3(0.0f, 0.0f, -90.f));;
+		GetGameObject()->GetScene()->FindObjectByName("ball")->Get<Gameplay::Physics::RigidBody>()->ApplyImpulse(glm::vec3(1.0f, 0.0f, 0.0f));
+	 }
+	if (_Q) {
 
+		GetGameObject()->GetScene()->FindObjectByName("ball")->Get<Gameplay::Physics::RigidBody>()->ApplyImpulse(glm::vec3(-1.0f, 0.0f, 0.0f));
+	}
 
 
 }

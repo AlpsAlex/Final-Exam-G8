@@ -261,7 +261,7 @@ void Application::_RegisterClasses()
 	ResourceManager::RegisterType<MeshResource>();
 	ResourceManager::RegisterType<Font>();
 	ResourceManager::RegisterType<Framebuffer>();
-
+	ResourceManager::RegisterType<RigidBody>();
 	// Register all of our component types so we can load them from files
 	ComponentManager::RegisterType<Camera>();
 	ComponentManager::RegisterType<RenderComponent>();
@@ -279,6 +279,8 @@ void Application::_RegisterClasses()
 	ComponentManager::RegisterType<Light>();
 	ComponentManager::RegisterType<ShadowCamera>();
 	ComponentManager::RegisterType<ShipMoveBehaviour>();
+	ComponentManager::RegisterType<RigidBody>();
+
 }
 
 void Application::_Load() {
