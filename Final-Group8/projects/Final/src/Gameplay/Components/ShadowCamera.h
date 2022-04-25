@@ -30,7 +30,7 @@ public:
 	float Intensity;
 	float Range;
 
-	ShadowCamera();
+	ShadowCamera(); 
 	virtual ~ShadowCamera();
 
 	/// <summary>
